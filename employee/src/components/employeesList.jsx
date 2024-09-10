@@ -5,11 +5,17 @@ function EmployeeList() {
   const [newEmployee, setNewEmployee] = useState({ name: '', email: '' });
 
   useEffect(() => {
-    // fetch employees from API or database on mount
-    fetch('/api/employees')
-      .then(response => response.json())
-      .then(data => setEmployees(data));
+    // retrieve employees from local storage on mount
+    const storedEmployees = localStorage.getItem('employees');
+    if (storedEmployees) {
+      setEmployees(JSON.parse(storedEmployees));
+    }
   }, []);
+
+  useEffect(() => {
+    // store employees in local storage when they change
+    localStorage.setItem('employees', JSON.stringify(employees));
+  }, [employees]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,8 +26,10 @@ function EmployeeList() {
       body: JSON.stringify(newEmployee),
     })
       .then(response => response.json())
-      .then(data => setEmployees([...employees, data]));
-    setNewEmployee({ name: '', email: '' });
+      .then(data => {
+        setEmployees([...employees, data]);
+        setNewEmployee({ name: '', email: '' });
+      });
   };
 
   const handleUpdate = (id, updatedEmployee) => {
