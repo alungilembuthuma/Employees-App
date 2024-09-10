@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import EmployeeList from './components/employeesList';
+import { useEffect, useState } from 'react'
+import './App.css'
+import Login from './component/login'
+import Navigation from './component/navigation'
+import Employee from './component/employeelist'
+import Page from './component/page'
 
 function App() {
-  const [employees, setEmployees] = useState([]);
-
-  useEffect(() => {
-    // Retrieve data from local storage on component mount
-    const storedEmployees = localStorage.getItem('employees');
-    if (storedEmployees) {
-      setEmployees(JSON.parse(storedEmployees));
-    }
-  }, []);
-
-  const handleAddEmployee = (newEmployee) => {
-    // Add new employee 
-    setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
-
-    // Store the updated array in local storage
-    localStorage.setItem('employees', JSON.stringify(employees));
-  };
+  const [count, setCount] = useState(0)
+ 
 
   return (
-    <div className='app' style={{ backgroundColor: "pink", width: "100%", height: "100vh" }}>
-      <EmployeeList employees={employees} onAddEmployee={handleAddEmployee} />
-    </div>
-  );
+    <>
+      <section><Navigation/></section><br></br>
+      {/* <section><Page/></section> */}
+      <section><Login/></section>
+      <section><Employee  /></section>
+      
+      
+    </>
+  )
 }
 
-export default App;
+export default App
