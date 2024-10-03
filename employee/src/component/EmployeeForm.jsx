@@ -30,42 +30,47 @@ function EmployeeForm({ addEmployee, updateEmployee }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
+           <h1>Employee Registration</h1>
+      {/* <EmployeeSearch employees={employees} /> */}
+      <EmployeeForm addEmployee={addEmployee} updateEmployee={updateEmployee} />
+      <EmployeeList employees={employees} deleteEmployee={deleteEmployee} />
+      
+     <label></label> <input
         name="name"
         value={form.name}
         onChange={handleChange}
         placeholder="Name"
         required
       />
-      <input
+       <label></label><input
         name="surname"
         value={form.surname}
         onChange={handleChange}
         placeholder="Surname"
         required
       />
-      <input
+       <label></label><input
         name="email"
         value={form.email}
         onChange={handleChange}
         placeholder="Email"
         required
       />
-      <input
+       <label></label><input
         name="phone"
         value={form.phone}
         onChange={handleChange}
         placeholder="Phone Number"
         required
       />
-      <input
+       <label></label><input
         name="position"
         value={form.position}
         onChange={handleChange}
         placeholder="Employee Position"
         required
       />
-      <input
+       <label></label><input
         name="image"
         value={form.image}
         onChange={handleChange}
