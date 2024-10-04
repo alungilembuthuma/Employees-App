@@ -1,14 +1,16 @@
 import React from 'react';
+import Employee from '../assets/EMPLOYEE.jpg'
 
-function EmployeeCard({ employee, deleteEmployee }) {
+function EmployeeCard({ employee, handleDeleteEmployee }) {
   return (
-    <div className="employee-card">
-      <h3>{employee.name} {employee.surname}</h3>
+    <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
+      <h2>{employee.name}</h2>
+      <img src={Employee} alt={employee.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
       <p>Email: {employee.email}</p>
       <p>Phone: {employee.phone}</p>
       <p>Position: {employee.position}</p>
-      <img src={employee.image} alt="Employee" width="100" />
-      <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
+      
+      <button onClick={handleDeleteEmployee}>Delete</button>
     </div>
   );
 }

@@ -1,82 +1,45 @@
 import React, { useState } from 'react';
 
-const initialFormState = {
-  id: '',
-  name: '',
-  surname: '',
-  email: '',
-  phone: '',
-  position: '',
-  image: ''
-};
+function EmployeeForm({ employee, setEmployee, handleAddEmployee }) {
+  const [name, setName] = useState(employee.name);
+  const [email, setEmail] = useState(employee.email);
+  const [phone, setPhone] = useState(employee.phone);
+  const [position, setPosition] = useState(employee.position);
+  const [image, setImage] = useState(employee.image); // add image state
 
-function EmployeeForm({ addEmployee, updateEmployee }) {
-  const [form, setForm] = useState(initialFormState);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (form.id) {
-      updateEmployee(form);
-    } else {
-      const newEmployee = { ...form, id: Date.now().toString() };
-      addEmployee(newEmployee);
-    }
-    setForm(initialFormState);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleAddEmployee({ name, email, phone, position, image }); // pass image to handleAddEmployee
   };
 
   return (
     <form onSubmit={handleSubmit}>
-           <h1>Employee Registration</h1>
-      {/* <EmployeeSearch employees={employees} /> */}
-      <EmployeeForm addEmployee={addEmployee} updateEmployee={updateEmployee} />
-      <EmployeeList employees={employees} deleteEmployee={deleteEmployee} />
-      
-     <label></label> <input
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-        placeholder="Name"
-        required
-      />
-       <label></label><input
-        name="surname"
-        value={form.surname}
-        onChange={handleChange}
-        placeholder="Surname"
-        required
-      />
-       <label></label><input
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-        placeholder="Email"
-        required
-      />
-       <label></label><input
-        name="phone"
-        value={form.phone}
-        onChange={handleChange}
-        placeholder="Phone Number"
-        required
-      />
-       <label></label><input
-        name="position"
-        value={form.position}
-        onChange={handleChange}
-        placeholder="Employee Position"
-        required
-      />
-       <label></label><input
-        name="image"
-        value={form.image}
-        onChange={handleChange}
-        placeholder="Image URL"
-      />
-      <button type="submit">{form.id ? 'Update' : 'Add'} Employee</button>
+      <label style={{ fontSize: "30px" }}>
+        Name:
+        <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+      </label>
+      <br />
+      <label style={{ fontSize: "30px" }}>
+        Email:
+        <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+      </label>
+      <br />
+      <label style={{ fontSize: "30px" }}>
+        Phone:
+        <input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
+      </label>
+      <br />
+      <label style={{ fontSize: "30px" }}>
+        Position:
+        <input type="text" value={position} onChange={(event) => setPosition(event.target.value)} />
+      </label>
+      <br />
+      <label style={{ fontSize: "30px" }}>
+        Image:
+        <input type="file" onChange={(event) => setImage(event.target.files[0])} />
+      </label>
+      <br />
+      <button type="submit">Add Employee</button>
     </form>
   );
 }

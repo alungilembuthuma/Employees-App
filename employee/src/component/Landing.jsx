@@ -1,6 +1,6 @@
 import React from 'react';
 import Company from '../assets/OIP__2_-removebg-preview.png'
-import EmployeeList from '../component/EmployeeList';
+import EmployeeList from './employeelist';
 
 export default function Landing() {
   return (
@@ -9,7 +9,7 @@ export default function Landing() {
       <h1 style={{fontFamily:"sans-serif", marginLeft:"41%", fontSize:"60px", marginTop:"-7%"}}>Employees App</h1>
       <div>
         <button style={{backgroundColor:"#4CAF50", color:"#fff", padding:"10px", marginLeft:"90%", marginTop:"-20%%"}}>
-            <a href="/employeelist" style={{textDecoration:"none", color:"#fff"}}>EmployeeList</a>
+            <a href="/employeeslist" style={{textDecoration:"none", color:"#fff"}}>EmployeeList</a>
         </button>
       </div>
     </div>
