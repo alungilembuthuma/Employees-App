@@ -1,45 +1,67 @@
 import React, { useState } from 'react';
+import { storage } from '../firebaseConfig'; 
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-function EmployeeForm({ employee, setEmployee, handleAddEmployee }) {
-  const [name, setName] = useState(employee.name);
-  const [email, setEmail] = useState(employee.email);
-  const [phone, setPhone] = useState(employee.phone);
-  const [position, setPosition] = useState(employee.position);
-  const [image, setImage] = useState(employee.image); // add image state
+function EmployeeForm() {
+  const [image, setImage] = useState(null);
+  const [employeeData, setEmployeeData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    position: '',
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleAddEmployee({ name, email, phone, position, image }); // pass image to handleAddEmployee
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (image) {
+      const storageRef = ref(storage, 'employee_images/' + image.name);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Progress monitoring (optional)
+        },
+        (error) => {
+          console.error('Upload failed:', error);
+        },
+        async () => {
+          // Get the download URL and then save it to Firestore
+          const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+
+          // You can now add the employee data (including image URL) to Firestore
+          const employee = { ...employeeData, image: imageUrl };
+          // Add employee to Firestore (use your Firestore logic here)
+          console.log('Employee added:', employee);
+        }
+      );
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label style={{ fontSize: "30px" }}>
-        Name:
-        <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-      </label>
-      <br />
-      <label style={{ fontSize: "30px" }}>
-        Email:
-        <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-      </label>
-      <br />
-      <label style={{ fontSize: "30px" }}>
-        Phone:
-        <input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
-      </label>
-      <br />
-      <label style={{ fontSize: "30px" }}>
-        Position:
-        <input type="text" value={position} onChange={(event) => setPosition(event.target.value)} />
-      </label>
-      <br />
-      <label style={{ fontSize: "30px" }}>
-        Image:
-        <input type="file" onChange={(event) => setImage(event.target.files[0])} />
-      </label>
-      <br />
-      <button type="submit">Add Employee</button>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Name"
+        value={employeeData.name}
+        onChange={(e) => setEmployeeData({ ...employeeData, name: e.target.value })}
+        required
+      />
+      <button type="submit">Submit</button>
     </form>
   );
 }

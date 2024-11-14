@@ -1,0 +1,110 @@
+/* Container Style for SignUp */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    background-image: url('https://yourcompanybackgroundimage.com/image.jpg'); /* Custom background image */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .signup-form-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+  }
+  
+  .signup-header {
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 120px;
+    margin-bottom: 15px;
+  }
+  
+  h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #002d72;
+    margin-bottom: 20px;
+  }
+  
+  .signup-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .signup-form label {
+    font-weight: bold;
+    color: #002d72;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .signup-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+  }
+  
+  .signup-form input:focus {
+    border-color: #003366;
+    outline: none;
+  }
+  
+  .signup-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .signup-btn:hover {
+    background-color: #004c99;
+  }
+  
+  .login-link {
+    margin-top: 15px;
+    font-size: 0.9em;
+  }
+  
+  .login-link a {
+    color: #003366;
+    text-decoration: none;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .signup-form-container {
+      width: 90%;
+      padding: 25px;
+    }
+  
+    .logo {
+      width: 100px;
+    }
+  
+    h2 {
+      font-size: 1.4em;
+    }
+  }
+  

@@ -1,70 +1,100 @@
 import React, { useState, useEffect } from 'react';
+import { db } from '../firebaseConfig'; 
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import EmployeeCard from './EmployeeCards';
 import EmployeeForm from './EmployeeForm';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
-  const [employee, setEmployee] = useState({ name: '', email: '', phone: '', position: '' });
+  const [employee, setEmployee] = useState({ name: '', email: '', phone: '', position: '', image: '' });
   const [editing, setEditing] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
+  const [currentId, setCurrentId] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedEmployees = localStorage.getItem('employees');
-    if (storedEmployees) {
-      setEmployees(JSON.parse(storedEmployees));
-    }
+    // Listen to authentication state changes
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        fetchEmployees();
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('employees', JSON.stringify(employees));
-  }, [employees]);
-
-  const handleAddEmployee = (newEmployee) => {
-    setEmployees([...employees, newEmployee]);
-    setEmployee({ name: '', email: '', phone: '', position: '' });
+  const fetchEmployees = async () => {
+    const querySnapshot = await getDocs(collection(db, 'employees'));
+    const employeeList = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    setEmployees(employeeList);
   };
 
-  const handleDeleteEmployee = (id) => {
-    setEmployees(employees.filter((employee, index) => index !== id));
+  const handleAddEmployee = async (newEmployee) => {
+    if (!user) {
+      console.error("User is not authenticated");
+      return; // Prevent adding employee if not authenticated
+    }
+
+    try {
+      await addDoc(collection(db, 'employees'), newEmployee);
+      setEmployee({ name: '', email: '', phone: '', position: '', image: '' });
+      fetchEmployees();  // Refresh employee list after adding
+    } catch (error) {
+      console.error("Error adding employee: ", error);
+    }
   };
 
-  const handleEditEmployee = (id) => {
-    const employeeToEdit = employees[id];
-    setEmployee(employeeToEdit);
-    setEditing(true);
-    setCurrentIndex(id);
-  };
-
-  const handleUpdateEmployee = (updatedEmployee) => {
-    const updatedEmployees = [...employees];
-    updatedEmployees[currentIndex] = updatedEmployee;
-    setEmployees(updatedEmployees);
-    setEmployee({ name: '', email: '', phone: '', position: '' });
-    setEditing(false);
-  };
-
-  
   return (
-    <div style={{ backgroundColor:"",backgroundSize: 'cover', height: '100vh', padding: '20px' }}>
-      <h1 style={{fontFamily:"sans-serif", marginLeft:"15%", fontSize:"50px"}}>Employee Registration</h1>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Employee Registration</h1>
       <EmployeeForm
         employee={employee}
         setEmployee={setEmployee}
         handleAddEmployee={handleAddEmployee}
-        handleUpdateEmployee={handleUpdateEmployee}
         editing={editing}
+        user={user}
       />
-      <h1 style={{fontFamily:"sans-serif", marginLeft:"15%", fontSize:"50px"}}>Employees List</h1>
-      {employees.map((employee, index) => (
-        <EmployeeCard
-          key={index}
-          employee={employee}
-          handleDeleteEmployee={() => handleDeleteEmployee(index)}
-          handleEditEmployee={() => handleEditEmployee(index)}
-        />
-      ))}
+      <h1 style={styles.title}>Employees List</h1>
+      <div style={styles.employeeList}>
+        {employees.map((employee) => (
+          <EmployeeCard
+            key={employee.id}
+            employee={employee}
+          />
+        ))}
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    backgroundColor: "#f0f8ff", 
+    height: '100vh', 
+    padding: '30px',
+    fontFamily: 'Arial, sans-serif',
+    display: 'flex', 
+    flexDirection: 'column', 
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: "36px", 
+    marginBottom: '20px', 
+    color: '#333',
+  },
+  employeeList: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+    gap: '20px',
+    padding: '20px',
+    width: '80%',
+  }
+};
 
 export default EmployeeList;

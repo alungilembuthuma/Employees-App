@@ -1,0 +1,110 @@
+/* Container Style for Login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;  /* Light gray background */
+    background-image: url('https://yourcompanybackgroundimage.com/image.jpg'); /* Custom background image */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .login-form-container {
+    background-color: rgba(255, 255, 255, 0.9);  /* White background with some transparency */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+  }
+  
+  .login-header {
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 120px;
+    margin-bottom: 15px;
+  }
+  
+  h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #002d72;  /* Dark blue */
+    margin-bottom: 20px;
+  }
+  
+  .login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .login-form label {
+    font-weight: bold;
+    color: #002d72;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+  }
+  
+  .login-form input:focus {
+    border-color: #003366; /* Focused border color */
+    outline: none;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #003366;  /* Dark blue */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-btn:hover {
+    background-color: #004c99;  /* Lighter blue on hover */
+  }
+  
+  .signup-link {
+    margin-top: 15px;
+    font-size: 0.9em;
+  }
+  
+  .signup-link a {
+    color: #003366;
+    text-decoration: none;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .login-form-container {
+      width: 90%;
+      padding: 25px;
+    }
+  
+    .logo {
+      width: 100px;
+    }
+  
+    h2 {
+      font-size: 1.4em;
+    }
+  }
+  
