@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth, db } from '../firebaseConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';  // Import db only as auth is no longer needed
+import { doc, setDoc } from 'firebase/firestore'; // Firestore methods
 import '../styles/SignUp.css';
+import Company from "../assets/OIP__2_-removebg-preview.png";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
     try {
-      // Create a new user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Add user information to Firestore under a "users" collection
-      await setDoc(doc(db, "users", user.uid), {
-        email: user.email,
+      // Create a user document in Firestore
+      await setDoc(doc(db, "users", email), {  // Using email as the document ID
+        email: email,
+        password: password,  // You can store the password but it is not recommended
         createdAt: new Date(),
       });
 
       alert("User created and added to Firestore!");
     } catch (error) {
-      console.error("Error signing up:", error);
+      console.error("Error signing up:", error.code, error.message);
       alert("Error creating user: " + error.message);
     }
   };
@@ -41,7 +40,7 @@ const SignUp = () => {
       <div className="signup-form-container">
         <div className="signup-header">
           <img
-            src="https://yourcompanylogo.com/logo.png" // Add your company's logo URL here
+            src={Company}
             alt="Company Logo"
             className="logo"
           />
@@ -62,7 +61,7 @@ const SignUp = () => {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -73,13 +72,22 @@ const SignUp = () => {
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm your password"
               required
             />
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              id="showPassword"
+              checked={showPassword}
+              onChange={() => setShowPassword((prev) => !prev)}
+            />
+            <label htmlFor="showPassword">Show Password</label>
           </div>
           <button type="submit" className="signup-btn">Sign Up</button>
         </form>

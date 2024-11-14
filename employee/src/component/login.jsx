@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/login.css';
+import Company from '../assets/OIP__2_-removebg-preview.png'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
       <div className="login-form-container">
         <div className="login-header">
           <img
-            src="https://yourcompanylogo.com/logo.png"  // Add your company's logo URL here
+            src={Company} 
             alt="Company Logo"
             className="logo"
           />
